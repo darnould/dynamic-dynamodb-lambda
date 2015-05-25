@@ -11,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args[1:]) < 4 {
-		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "<region>", "<table>", "<read/write>", "<up/down>")
+		fmt.Fprintln(os.Stderr, "Usage:", os.Args[0], "<region>", "<table>", "<read/write>", "<up/down>", "<percent>")
 		os.Exit(1)
 	}
 
@@ -19,7 +19,7 @@ func main() {
 	table := os.Args[2]
 	capacity := os.Args[3]
 	direction := os.Args[4]
-	scaleFactor := int64(2)
+	percent := os.Args[5]
 
 	svc := dynamodb.New(&aws.Config{Region: region})
 
@@ -41,17 +41,17 @@ func main() {
 	var updatedWriteCapacity int64
 	if capacity == "read" {
 		if direction == "up" {
-			updatedReadCapacity = currentReadCapacity * scaleFactor
+			updatedReadCapacity = currentReadCapacity * (percent / 100)
 		} else {
-			updatedReadCapacity = currentReadCapacity / scaleFactor
+			updatedReadCapacity = currentReadCapacity / (percent / 100)
 		}
 	}
 
 	if capacity == "write" {
 		if direction == "up" {
-			updatedWriteCapacity = currentWriteCapacity * scaleFactor
+			updatedWriteCapacity = currentWriteCapacity * (percent / 100)
 		} else {
-			updatedWriteCapacity = currentWriteCapacity / scaleFactor
+			updatedWriteCapacity = currentWriteCapacity / (percent / 100)
 		}
 	}
 
