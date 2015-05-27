@@ -9,5 +9,5 @@ build: zip
 	--zip-file "fileb://${PWD}/dynamic-dynamodb-lambda.zip" \
 	--handler dynamic-dynamodb-lambda.handler \
 	--runtime nodejs \
-	--role ${ROLE}
-	--profile dynamic-dynamodb-lambda
+	--role ${ROLE} \
+	--region ${REGION}
